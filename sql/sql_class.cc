@@ -1287,7 +1287,7 @@ void THD::init(void)
   bzero((char *) &org_status_var, sizeof(org_status_var));
   status_in_global= 0;
   start_bytes_received= 0;
-  last_commit_gtid.seq_no= 0;
+  m_last_commit_gtid.seq_no= 0;
   last_stmt= NULL;
   /* Reset status of last insert id */
   arg_of_last_insert_id_function= FALSE;
@@ -7069,6 +7069,17 @@ THD::signal_wakeup_ready()
   mysql_cond_signal(&COND_wakeup_ready);
 }
 
+void THD::set_last_commit_gtid(rpl_gtid &gtid)
+{
+  bool changed_gtid= (m_last_commit_gtid.seq_no != gtid.seq_no);
+  m_last_commit_gtid= gtid;
+  if (changed_gtid &&
+      session_tracker.get_tracker(SESSION_SYSVARS_TRACKER)->is_enabled())
+  {
+    session_tracker.get_tracker(SESSION_SYSVARS_TRACKER)->
+      mark_as_changed(this, (LEX_CSTRING*)Sys_last_gtid_ptr);
+ }
+}
 
 void
 wait_for_commit::reinit()
