@@ -35,3 +35,4 @@ galera.galera_pc_ignore_sb : MDEV-15811 Test failure on galera_pc_ignore_sb
 galera_kill_applier : race condition at the start of the test
 galera_ist_progress: MDEV-15236 galera_ist_progress fails when trying to read transfer status
 pxc-421: Lock timeout exceeded
+galera_sst_xtrabackup-v2: xtrabackup got signal 6: Failing assertion: UT_LIST_GET_LEN(rseg->insert_undo_list) == 0
