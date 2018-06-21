@@ -8098,7 +8098,7 @@ int TABLE_LIST::fetch_number_of_rows()
   {
     if (jtbm_subselect->is_jtbm_merged)
     {
-      table->file->stats.records= jtbm_subselect->jtbm_record_count;
+      table->file->stats.records= (ha_rows)jtbm_subselect->jtbm_record_count;
       set_if_bigger(table->file->stats.records, 2);
       table->used_stat_records= table->file->stats.records;
     }
